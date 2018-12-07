@@ -14,8 +14,6 @@
  *  hit plus a possible eviction.
  *
  * The function print_summary() is given to print output.
- * Please use this function to print the number of hits, misses and evictions.
- * This is crucial for the driver to evaluate your work. 
  */
 
 #include <getopt.h>
@@ -28,9 +26,6 @@
 #include <string.h>
 #include <errno.h>
 #include <stdbool.h>
-
-/****************************************************************************/
-/***** DO NOT MODIFY THESE VARIABLE NAMES ***********************************/
 
 /* Globals set by command line args */
 int s = 0; /* set index bits */
@@ -51,19 +46,11 @@ int evict_cnt = 0;
 
 
 /* Type: Memory address 
- * Use this type whenever dealing with addresses or address masks
  */                    
 typedef unsigned long long int mem_addr_t;
 
-/* Type: Cache line
- * TODO 
- * 
- * NOTE: 
- * You might (not necessarily though) want to add an extra field to this struct
- * depending on your implementation
- * 
- * For example, to use a linked list based LRU,
- * you might want to have a field "struct cache_line * next" in the struct 
+/* 
+ * Type: Cache line
  */                    
 typedef struct cache_line {                    
     char valid;
@@ -78,12 +65,10 @@ typedef cache_set_t* cache_t;
 /* The cache we are simulating */
 cache_t cache;
 long unsigned cache_size;
-/* TODO - COMPLETE THIS FUNCTION
+/* 
  * init_cache - 
- * Allocate data structures to hold info regrading the sets and cache lines
- * use struct "cache_line_t" here
- * Initialize valid and tag field with 0s.
- * use S (= 2^s) and E while allocating the data structures here
+ * Allocated data structures to hold info regrading the sets and cache lines
+ * Initialized valid and tag field with 0s.
  */                    
 void init_cache() {  
     S = (int) pow(2, s);
@@ -125,7 +110,7 @@ void init_cache() {
 }
 
 
-/* TODO - COMPLETE THIS FUNCTION 
+/* 
  * free_cache - free each piece of memory you allocated using malloc 
  * inside init_cache() function
  */                    
@@ -142,12 +127,11 @@ void free_cache() {
     free(cache);
 }
 
-/* TODO - COMPLETE THIS FUNCTION 
- * access_data - Access data at memory address addr.
+/* 
+ *   access_data - Access data at memory address addr.
  *   If it is already in cache, increase hit_cnt
  *   If it is not in cache, bring it in cache, increase miss count.
  *   Also increase evict_cnt if a line is evicted.
- *   you will manipulate data structures allocated in init_cache() here
  */                    
 void access_data(mem_addr_t addr) {                      
     int set;
@@ -221,13 +205,10 @@ void access_data(mem_addr_t addr) {
     evict_cnt++;
 }
 
-/* TODO - FILL IN THE MISSING CODE
+/* 
  * replay_trace - replays the given trace file against the cache 
  * reads the input trace file line by line
  * extracts the type of each memory access : L/S/M
- * YOU MUST TRANSLATE one "L" as a load i.e. 1 memory access
- * YOU MUST TRANSLATE one "S" as a store i.e. 1 memory access
- * YOU MUST TRANSLATE one "M" as a load followed by a store i.e. 2 memory accesses 
  */                    
 void replay_trace(char* trace_fn) {                      
     char buf[1000];
@@ -247,10 +228,6 @@ void replay_trace(char* trace_fn) {
             if (verbosity)
                 printf("%c %llx,%u ", buf[1], addr, len);
 
-            // TODO - MISSING CODE
-            // now you have: 
-            // 1. address accessed in variable - addr 
-            // 2. type of acccess(S/L/M)  in variable - buf[1] 
             // call access_data function here depending on type of access
             switch (buf[1]){
                 case 'S': access_data(addr);
